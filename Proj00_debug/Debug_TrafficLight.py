@@ -3,26 +3,33 @@ import music
 
 in_traffic_light_loop = True
 
-# 交通灯模块 R接S5 Y接S6 G接S7 GND接G5
+# 交通灯模块 R接S2 Y接S1 G接S0 GND接G0
 # Traffic Light Module Loop
 while in_traffic_light_loop:
     music.play(music.JUMP_UP)
     display.clear()
-    pin5.write_digital(0)
-    pin6.write_digital(0)
-    pin7.write_digital(0)
+    # 读取并展示土壤湿度
+    humidity = pin3.read_analog()
+    display.show(humidity)
+    # 初始化交通灯
+    pin0.write_digital(0)
+    pin1.write_digital(0)
+    pin2.write_digital(0)
     sleep(1000)
     # 绿灯亮
-    display.show('G')
-    pin7.write_digital(1)
+    pin0.write_digital(1)
+    pin1.write_digital(0)
+    pin2.write_digital(0)
     sleep(2000)
     # 黄灯亮
-    display.show('Y')
-    pin6.write_digital(1)
+    pin0.write_digital(0)
+    pin1.write_digital(1)
+    pin2.write_digital(0)
     sleep(2000)
     # 红灯亮
-    display.show('R')
-    pin5.write_digital(1)
+    pin0.write_digital(0)
+    pin1.write_digital(0)
+    pin2.write_digital(1)
     sleep(2000)
 
 # The end
