@@ -7,26 +7,22 @@ in_traffic_light_loop = True
 # Traffic Light Module Loop
 while in_traffic_light_loop:
     music.play(music.JUMP_UP)
+    display.clear()
     pin5.write_digital(0)
     pin6.write_digital(0)
     pin7.write_digital(0)
-    while True:
-        display.show('G')
-        pin5.write_digital(0)
-        pin6.write_digital(0)
-        pin7.write_digital(1)
-        if button_a.is_pressed() or button_b.is_pressed():
-            pin7.write_digital(0)
-            if button_a.is_pressed() == answer_is_a:
-                display.show('R')
-                pin5.write_digital(1)
-            else:
-                display.show('Y')
-                pin6.write_digital(1)
-            sleep(1000)
-            pin5.write_digital(0)
-            pin6.write_digital(0)
-            pin7.write_digital(0)
-            display.clear()
+    sleep(1000)
+    # 绿灯亮
+    display.show('G')
+    pin7.write_digital(1)
+    sleep(2000)
+    # 黄灯亮
+    display.show('Y')
+    pin6.write_digital(1)
+    sleep(2000)
+    # 红灯亮
+    display.show('R')
+    pin5.write_digital(1)
+    sleep(2000)
 
 # The end
