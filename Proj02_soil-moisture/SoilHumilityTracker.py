@@ -24,7 +24,8 @@ pins 8, 12, 13, 14, 15, 16 support write only
 
 ————————————————————
 
-硬件接线
+Input/Output Pins
+— — —
 Soil Humidity Sensor
 -:G0 +:V0 S:S0
 — — —
@@ -38,32 +39,27 @@ GND:G12 G:S12 Y:S13 R:S14
 '''
 
 
+# 声明变量分配引脚
+soil_humidity_sensor = pin0
+buzzer = pin8
+traffic_light_g = pin12
+traffic_light_y = pin13
+traffic_light_r = pin14
+
+
 # 定义主函数 loop循环
 def main():
     while True:
         # 蜂鸣清屏 本轮循环开始
-        play_buzz_tone()
+        music.play('f4:2'，pin = buzzer，wait = True，loop = False)
         display.clear()
         # 读取并展示土壤湿度
-        humidity = get_soil_humidity()
+        humidity = soil_humidity_sensor.read_analog()
         display.show(humidity)
         sleep(2000)
         expression_humidity(humidity)
         # 播放一次交通灯变灯流程
         full_traffic_light()
-
-
-# 调试函数 硬件调试 蜂鸣器
-# -:G8 +:V8 S:S8
-def play_buzz_tone():
-    music.play('f4:2'，pin = microbit.pin8，wait = True，loop = False)
-
-
-# 业务函数 硬件交互 读取土壤湿度值
-# -:G0 +:V0 S:S0
-def get_soil_humidity():
-    value = pin0.read_analog()
-    return value
 
 
 # 调试函数 表情化输出湿度(太干, 有点干, 舒适)
@@ -84,11 +80,10 @@ def expression_humidity(value):
 # param yellow_on:  黄灯开关 bool
 # param green_on:   绿灯开关 bool
 # param duration:   持续时长(ms) int
-# GND:G12 G:S12 Y:S13 R:S14
 def traffic_light(red_on, yellow_on, green_on, duration):
-    pin12.write_digital(green_on)
-    pin13.write_digital(yellow_on)
-    pin14.write_digital(red_on)
+    traffic_light_g.write_digital(green_on)
+    traffic_light_y.write_digital(yellow_on)
+    traffic_light_r.write_digital(red_on)
     if duration > 0:
         sleep(duration)
 
