@@ -26,7 +26,7 @@ pins 8, 12, 13, 14, 15, 16 support write only
 
 硬件接线
 Soil Humidity Sensor
-G:G0 V:V0 S:S0
+-:G0 +:V0 S:S0
 — — —
 Digital Buzzer Module
 -:G8 +:V8 S:S8
@@ -60,7 +60,7 @@ def play_buzz_tone():
 
 
 # 业务函数 硬件交互 读取土壤湿度值
-# G:G0 V:V0 S:S0
+# -:G0 +:V0 S:S0
 def get_soil_humidity():
     value = pin0.read_analog()
     return value
@@ -71,7 +71,6 @@ def get_soil_humidity():
 def expression_humidity(value):
     severe_dry = 50
     mild_dry = 150
-    display.show(Image.HAPPY)
     if value < severe_dry:
         display.show(Image.SAD)
     elif value < mild_dry:
