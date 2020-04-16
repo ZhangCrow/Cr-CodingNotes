@@ -15,7 +15,8 @@ pins 8, 12, 13, 14, 15, 16 support write only
 
 ————————————————————
 
-硬件接线
+Input/Output Pins
+— — —
 Water Sensor
 -:G0 +:V0 S:S0
 — — —
