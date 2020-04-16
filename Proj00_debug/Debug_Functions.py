@@ -1,4 +1,5 @@
 import music
+import random
 from microbit import *
 
 '''
@@ -12,6 +13,7 @@ from microbit import *
 '''
 def main():
     while True:
+        music.play(music.JUMP_UP)
         display.clear()
         # 第一段逻辑
         number = random.randint(1, 9)
@@ -50,7 +52,7 @@ def traffic_light(red_on, yellow_on, green_on):
 '''
 业务函数 一次完整的交通灯变灯流程
 '''
-def full_traffic_light()
+def full_traffic_light():
     traffic_light(False, False, True)
     sleep(2000)
     traffic_light(False, True, False)
