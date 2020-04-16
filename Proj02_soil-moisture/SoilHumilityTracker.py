@@ -67,6 +67,7 @@ def get_soil_humidity():
 
 
 # 调试函数 表情化输出湿度(太干, 有点干, 舒适)
+# param value: 土壤湿度值(0~1023)
 def expression_humidity(value):
     severe_dry = 50
     mild_dry = 150
@@ -80,6 +81,10 @@ def expression_humidity(value):
 
 
 # 调试函数 一次完整的交通灯变灯流程
+# param red_on:     红灯开关 bool
+# param yellow_on:  黄灯开关 bool
+# param green_on:   绿灯开关 bool
+# param duration:   持续时长(ms) int
 # GND:G12 G:S12 Y:S13 R:S14
 def traffic_light(red_on, yellow_on, green_on, duration):
     pin12.write_digital(green_on)
