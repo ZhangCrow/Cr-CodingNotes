@@ -1,5 +1,4 @@
 import music
-import utime
 from microbit import *
 
 '''
