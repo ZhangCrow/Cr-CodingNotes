@@ -1,6 +1,8 @@
 # PlantWaterDoc
 <!--我想涨薪跳槽当老板！！！-->
 ## 设计文档
+[TOC]
+
 
 ### 主要功能
 * 自动监测土壤湿度，超过一定干燥值就自动浇水。
@@ -66,5 +68,15 @@ G. 湿润土壤+高水位+低亮度	预期：停止蜂鸣
 H. 湿润土壤+低水位+低亮度 	预期：停止蜂鸣 然后它就休眠了
 
 
-https://github.com/RyannnJing/INFO_697
+### 资料文档
+
+[Crow's INFO_697](https://github.com/ZhangCrow/INFO_796_Faker)
+[RyannnJing's INFO_697](https://github.com/RyannnJing/INFO_697)
+[KS0361(KS0365) keyestudio 37 in 1 Starter Kit for BBC micro:bit](https://wiki.keyestudio.com/KS0361(KS0365)_keyestudio_37_in_1_Starter_Kit_for_BBC_micro:bit)
+[Edge Connector & micro:bit pinout](https://tech.microbit.org/hardware/edgeconnector/)
+[Hardware Description](https://tech.microbit.org/hardware/)
+[BBC micro:bit MicroPython Docs](https://microbit-micropython.readthedocs.io/en/latest/tutorials/hello.html)
+[MakeCode editor](https://makecode.microbit.org/#editor)
+[Let's code](https://microbit.org/code/)
+
 
