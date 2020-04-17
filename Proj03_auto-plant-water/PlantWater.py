@@ -50,9 +50,11 @@ relay = pin13
 
 # 定义主函数 loop循环
 def main():
+    low_water_level = 80
+    low_light_level = 50
     while True:
-        is_enough_water = water_sensor.read_analog() > 10
-        is_still_up = ambient_light_sensor.read_analog() > 500
+        is_enough_water = water_sensor.read_analog() > low_water_level
+        is_still_up = ambient_light_sensor.read_analog() > low_light_level
         if is_enough_water:
             # 水量充足 停止蜂鸣 监测土壤
             music.stop(pin = buzzer)
@@ -69,12 +71,12 @@ def main():
 
 # 这个函数来读取土壤湿度 如有必要控制继电器通电浇水
 def track_soil_humility():
-    is_dry = 150
+    low_humidity = 500
     value = soil_humidity_sensor.read_analog()
     display.clear()
-    display.show(value)
+    display.scroll(value)
     sleep(2000)
-    need_water = value < is_dry
+    need_water = value < low_humidity
     if need_water:
         display.show(Image.SAD)
     else:

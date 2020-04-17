@@ -49,10 +49,10 @@ def main():
 
 
 def get_sensor_analog(sensor, title):
-    display.show(title)
+    display.scroll(title)
     sleep(1000)
     value = sensor.read_analog()
-    display.show(value)
+    display.scroll(value)
     sleep(2000)
     return value
 

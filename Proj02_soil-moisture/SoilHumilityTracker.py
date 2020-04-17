@@ -55,7 +55,7 @@ def main():
         display.clear()
         # 读取并展示土壤湿度
         humidity = soil_humidity_sensor.read_analog()
-        display.show(humidity)
+        display.scroll(humidity)
         sleep(2000)
         expression_humidity(humidity)
         # 播放一次交通灯变灯流程
