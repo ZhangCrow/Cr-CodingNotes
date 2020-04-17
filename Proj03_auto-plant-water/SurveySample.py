@@ -68,6 +68,7 @@ def main():
         display.scroll(msg)
 
 
+# 测试输出指令与硬件
 def debug_output_module():
     # 开关水泵
     relay.write_digital(True)
