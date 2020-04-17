@@ -50,7 +50,7 @@ relay = pin13
 
 low_water_level = 80    # 正式环境 80
 low_light_level = 50    # 正式环境 50
-low_humidity = 500      # 正式环境 330
+low_humidity = 330      # 正式环境 330
 
 
 # 定义主函数 loop循环
@@ -61,20 +61,19 @@ def main():
         if is_enough_water:
             # 水量充足 停止蜂鸣 监测土壤
             music.stop(buzzer)
+            display.clear()
             need_water = track_soil_humility()
             if need_water:
                 watering()
         elif is_still_up:
             # 水量不足&两脚兽还没睡 蜂鸣提醒加水
-            music.play('f4', pin = buzzer, wait = True, loop = False)
+            music.play('f4:2', pin = buzzer, wait = True, loop = False)
         else:
             # 水量不足&两脚兽熄灯了 休眠4h
             music.stop(buzzer)
-            display.show(Image.ASLEEP) # 这行是调试代码
-            sleep(1000*10) # 这行是调试代码 睡10秒够了
-            # sleep(1000*60*60*4)
-        # 循环一次等一会儿
-        sleep(1000*15)
+            # display.show(Image.ASLEEP) # 这行是调试代码
+            # sleep(1000*10) # 这行是调试代码 调试时睡10秒够了
+            sleep(1000*60*60*4)
 
 
 # 这个函数来读取土壤湿度 如有必要控制继电器通电浇水

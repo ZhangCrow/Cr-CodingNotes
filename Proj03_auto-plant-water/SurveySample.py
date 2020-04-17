@@ -3,8 +3,14 @@ from microbit import *
 '''
 ————————————————————
 
-本文件用以测量土壤，水流以及环境光样本
-以对其进行区间划分
+Target
+
+* 尝试同时接入多个硬件使其都可以正常工作(土壤湿度传感器, 水流传感器, 环境光传感器, 蜂鸣器, 红灯(表示水泵))
+* 实现对土壤，水流以及环境光进行样本数值采样，用来进行区间划分
+* 尝试函数的声明和调用
+ToDo:
+* 业务逻辑
+* 场景测试、细节调整及优化
 
 ————————————————————
 
@@ -28,6 +34,12 @@ Ambient Light Sensor
 — — —
 Soil Humidity Sensor
 -:G2 +:V2 S:S2
+— — —
+Digital Buzzer Module
+-:G12 +:V12 S:S12
+- - -
+Red LED Module
+-:G13 +:V13 S:S13
 
 ————————————————————
 '''
@@ -37,24 +49,34 @@ Soil Humidity Sensor
 water_sensor = pin0
 ambient_light_sensor = pin1
 soil_humidity_sensor = pin2
+buzzer = pin12
+relay = pin13 # 用Red LED Module 表示“Single Relay Module+电池+水泵”组合，因为没有水泵
 
 
 # 定义主函数 loop循环
 def main():
     while True:
         display.clear()
-        get_sensor_analog(water_sensor, 'W')
-        # get_sensor_analog(ambient_light_sensor, 'L')
-        # get_sensor_analog(soil_humidity_sensor, 'H')
+        # 开关水泵
+        relay.write_digital(True)
+        sleep(1000*5)
+        relay.write_digital(False)
+        # 蜂鸣器
+        music.play('f4:2', pin = buzzer, wait = True, loop = False)
+        # 传感器读取样本
+        w_level = get_sensor_analog(water_sensor, 'W')
+        l_level = get_sensor_analog(ambient_light_sensor, 'L')
+        h_level = get_sensor_analog(soil_humidity_sensor, 'H')
+        msg = w_level + ',' + l_level + ',' + h_level
+        display.scroll(msg)
 
 
+# 获取传感器度数的文本内容
 def get_sensor_analog(sensor, title):
     display.scroll(title)
-    sleep(1000)
     value = sensor.read_analog()
-    display.scroll(value)
-    sleep(2000)
-    return value
+    content = title + ':' + str(value)
+    return content
 
 
 # Call the main function.
