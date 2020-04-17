@@ -58,12 +58,8 @@ relay = pin13 # 用Red LED Module 表示“Single Relay Module+电池+水泵”�
 def main():
     while True:
         display.clear()
-        # 开关水泵
-        relay.write_digital(True)
-        sleep(1000*5)
-        relay.write_digital(False)
-        # 蜂鸣器
-        music.play('f4:2', pin = buzzer, wait = True, loop = False)
+        # 测试输出指令
+        debug_output_module()
         # 传感器读取样本
         w_level = get_sensor_analog(water_sensor, 'W')
         l_level = get_sensor_analog(ambient_light_sensor, 'L')
@@ -72,13 +68,21 @@ def main():
         display.scroll(msg)
 
 
+def debug_output_module():
+    # 开关水泵
+    relay.write_digital(True)
+    sleep(1000*5)
+    relay.write_digital(False)
+    # 蜂鸣器
+    music.play('f4:2', pin = buzzer, wait = True, loop = False)
+
+
 # 获取传感器度数的文本内容
 def get_sensor_analog(sensor, title):
     display.scroll(title)
     value = sensor.read_analog()
     content = title + ':' + str(value)
     return content
-
 
 # Call the main function.
 main()
