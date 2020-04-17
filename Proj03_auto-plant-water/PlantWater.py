@@ -61,6 +61,7 @@ def main():
         # 获取感应器实时状态(水箱水位、光照亮度)
         is_enough_water = water_sensor.read_analog() > low_water_level
         is_still_up = ambient_light_sensor.read_analog() > low_light_level
+        # 环境判断
         if is_enough_water:
             # 高水位 -> 停止蜂鸣 监测土壤 如有必要执行浇水
             soil_need_water = track_soil_humility()
