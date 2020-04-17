@@ -47,51 +47,63 @@ buzzer = pin12
 relay = pin13
 
 
-low_water_level = 80    # 正式环境 80
-low_light_level = 50    # 正式环境 50
-low_humidity = 330      # 正式环境 330
+low_water_level = 80    # ProductionValue:  80, TestingValue: 120
+low_light_level = 50    # ProductionValue:  50, TestingValue: 100
+low_humidity = 330      # ProductionValue: 330, TestingValue: 420
 
 
 # 定义主函数 loop循环
 def main():
     while True:
+        # 初始化/重置状态(蜂鸣器, LED)
+        display.clear()
+        switch_buzzer(False)
+        # 获取感应器实时状态(水箱水位、光照亮度)
         is_enough_water = water_sensor.read_analog() > low_water_level
         is_still_up = ambient_light_sensor.read_analog() > low_light_level
         if is_enough_water:
-            # 水量充足 停止蜂鸣 监测土壤
-            music.stop(buzzer)
-            display.clear()
-            need_water = track_soil_humility()
-            if need_water:
+            # 高水位 -> 停止蜂鸣 监测土壤 如有必要执行浇水
+            soil_need_water = track_soil_humility()
+            if soil_need_water:
                 watering()
         elif is_still_up:
-            # 水量不足&两脚兽还没睡 蜂鸣提醒加水
-            music.play('f4:2', pin = buzzer, wait = True, loop = False)
+            # 低水位&(高光照:白天/未熄灯) -> 蜂鸣提醒加水
+            switch_buzzer(True)
         else:
-            # 水量不足&两脚兽熄灯了 休眠4h
-            music.stop(buzzer)
-            # display.show(Image.ASLEEP) # 这行是调试代码
-            # sleep(1000*10) # 这行是调试代码 调试时睡10秒够了
+            # 低水位&(低光照:夜里&已熄灯) -> 停止蜂鸣 休眠一段时间
+            # display.show(Image.ASLEEP)    # debug code
+            # sleep(1000*10)                # debug code 调试时睡10秒够了
             sleep(1000*60*60*4)
 
 
-# 这个函数来读取土壤湿度 如有必要控制继电器通电浇水
+# 这个函数来读取土壤湿度 显示表情 返回是否需要浇水
+# return is_need_water
 def track_soil_humility():
     value = soil_humidity_sensor.read_analog()
-    display.clear()
-    display.scroll(value)
-    sleep(1000*2)
     need_water = value < low_humidity
+    # display.clear()             # debug code
+    # display.scroll(value)       # debug code
+    # sleep(1000*2)               # debug code
     if need_water:
         display.show(Image.SAD)
     else:
         display.show(Image.HAPPY)
     return need_water
 
-# 浇水
+
+# 控制硬件设备提醒用户水箱缺水
+# param switch_on: 开关蜂鸣器 bool
+def switch_buzzer(switch_on):
+    if switch_on:
+        music.play('f4:2', pin = buzzer, wait = True, loop = False)
+    else:
+        music.stop(buzzer)
+
+
+# 控制硬件设备进行浇水
 def watering():
     relay.write_digital(True)
-    # 浇水20s
+    # 浇水数秒后停止
     sleep(1000*20)
     relay.write_digital(False)
 
