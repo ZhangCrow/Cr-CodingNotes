@@ -31,11 +31,16 @@ Digital Buzzer Module
 - - -
 Single Relay Module
 -:G13 +:V13 S:S13
+# # #
+if has not water pump, use red LED module
+Red LED Module
+-:G13 +:V13 S:S13
 
 ————————————————————
 '''
 
 
+# 声明变量 为硬件模块或传感器分配引脚
 water_sensor = pin0
 ambient_light_sensor = pin1
 soil_humidity_sensor = pin2
@@ -56,7 +61,7 @@ def main():
                 watering()
         elif is_still_up:
             # 水量不足&两脚兽还没睡 蜂鸣提醒加水
-            music.play（'f4:2'，pin = buzzer，wait = False，loop = True ）
+            music.play('f4:2', pin = buzzer, wait = False, loop = True)
         else:
             # 水量不足&两脚兽熄灯了 休眠4h
             sleep(1000*60*60*4)
@@ -79,8 +84,8 @@ def track_soil_humility():
 # 浇水
 def watering():
     relay.write_digital(True)
-    # 浇水30s
-    sleep(1000*30)
+    # 浇水20s
+    sleep(1000*20)
     relay.write_digital(False)
 
 

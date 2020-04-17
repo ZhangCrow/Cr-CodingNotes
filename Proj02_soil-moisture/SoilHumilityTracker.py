@@ -51,7 +51,7 @@ traffic_light_r = pin14
 def main():
     while True:
         # 蜂鸣清屏 本轮循环开始
-        music.play('f4:2'，pin = buzzer，wait = True，loop = False)
+        music.play('f4:2', pin = buzzer, wait = True, loop = False)
         display.clear()
         # 读取并展示土壤湿度
         humidity = soil_humidity_sensor.read_analog()
