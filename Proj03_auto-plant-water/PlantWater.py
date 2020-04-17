@@ -30,8 +30,8 @@ Digital Buzzer Module
 - - -
 Single Relay Module
 -:G13 +:V13 S:S13
-# # #
-if has not water pump, use red LED module
+- - -
+# 如果没有水泵，可使用红灯模块代替表示继电器+电池+水泵的组合来调试
 Red LED Module
 -:G13 +:V13 S:S13
 
@@ -39,17 +39,17 @@ Red LED Module
 '''
 
 
-# 声明变量 为硬件模块或传感器分配引脚
+# 声明变量
+# 为硬件模块或传感器分配引脚
 water_sensor = pin0
 ambient_light_sensor = pin1
 soil_humidity_sensor = pin2
 buzzer = pin12
 relay = pin13
-
-
-low_water_level = 80    # ProductionValue:  80, TestingValue: 120
-low_light_level = 50    # ProductionValue:  50, TestingValue: 100
-low_humidity = 330      # ProductionValue: 330, TestingValue: 420
+# 定义临界值
+LOW_WATER_LEVEL = 80    # production:  80, testing: 120
+LOW_LIGHT_LEVEL = 50    # production:  50, testing: 100
+LOW_HUMIDITY = 330      # production: 330, testing: 420
 
 
 # 定义主函数 loop循环
@@ -59,8 +59,8 @@ def main():
         display.clear()
         switch_buzzer(False)
         # 获取感应器实时状态(水箱水位、光照亮度)
-        is_enough_water = water_sensor.read_analog() > low_water_level
-        is_still_up = ambient_light_sensor.read_analog() > low_light_level
+        is_enough_water = water_sensor.read_analog() > LOW_WATER_LEVEL
+        is_still_up = ambient_light_sensor.read_analog() > LOW_LIGHT_LEVEL
         # 环境判断
         if is_enough_water:
             # 高水位 -> 停止蜂鸣 监测土壤 如有必要执行浇水
@@ -78,10 +78,10 @@ def main():
 
 
 # 这个函数来读取土壤湿度 显示表情 返回是否需要浇水
-# return is_need_water
+# return is_need_water bool value
 def track_soil_humility():
     value = soil_humidity_sensor.read_analog()
-    need_water = value < low_humidity
+    need_water = value < LOW_HUMIDITY
     # display.clear()             # debug code
     # display.scroll(value)       # debug code
     # sleep(1000*2)               # debug code
@@ -93,7 +93,7 @@ def track_soil_humility():
 
 
 # 控制硬件设备提醒用户水箱缺水
-# param switch_on: 开关蜂鸣器 bool
+# param switch_on: 开关蜂鸣器 bool value
 def switch_buzzer(switch_on):
     if switch_on:
         music.play('f4:2', pin = buzzer, wait = True, loop = False)
