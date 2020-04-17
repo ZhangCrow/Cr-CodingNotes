@@ -72,8 +72,6 @@ def main():
             switch_buzzer(True)
         else:
             # 低水位&(低光照:夜里&已熄灯) -> 休眠一段时间
-            # display.show(Image.ASLEEP)    # debug code
-            # sleep(1000*10)                # debug code 调试时睡10秒够了
             sleep(1000*60*60*4)
 
 
@@ -82,9 +80,6 @@ def main():
 def track_soil_humility():
     value = soil_humidity_sensor.read_analog()
     need_water = value < LOW_HUMIDITY
-    # display.clear()             # debug code
-    # display.scroll(value)       # debug code
-    # sleep(1000*2)               # debug code
     if need_water:
         display.show(Image.SAD)
     else:
