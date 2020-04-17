@@ -17,23 +17,23 @@ pins 8, 12, 13, 14, 15, 16 support write only
 Input/Output Pins
 — — —
 Water Sensor
--:G0 +:V0 S:S0
+-:G0, +:V0, S:S0
 — — —
 Ambient Light Sensor
--:G1 +:V1 S:S1
+-:G1, +:V1, S:S1
 — — —
 Soil Humidity Sensor
--:G2 +:V2 S:S2
+-:G2, +:V2, S:S2
 — — —
 Digital Buzzer Module
--:G12 +:V12 S:S12
+-:G12, +:V12, S:S12
 - - -
 Single Relay Module
--:G13 +:V13 S:S13
+-:G13, +:V13, S:S13
 - - -
 # 如果没有水泵，可使用红灯模块代替表示继电器+电池+水泵的组合来调试
 Red LED Module
--:G13 +:V13 S:S13
+-:G13, +:V13, S:S13
 
 ————————————————————
 '''
@@ -63,7 +63,7 @@ def main():
         is_still_up = ambient_light_sensor.read_analog() > LOW_LIGHT_LEVEL
         # 环境判断
         if is_enough_water:
-            # 高水位 -> 停止蜂鸣 监测土壤 如有必要执行浇水
+            # 高水位 -> 监测土壤 如有必要执行浇水
             soil_need_water = track_soil_humility()
             if soil_need_water:
                 watering()
@@ -71,7 +71,7 @@ def main():
             # 低水位&(高光照:白天/未熄灯) -> 蜂鸣提醒加水
             switch_buzzer(True)
         else:
-            # 低水位&(低光照:夜里&已熄灯) -> 停止蜂鸣 休眠一段时间
+            # 低水位&(低光照:夜里&已熄灯) -> 休眠一段时间
             # display.show(Image.ASLEEP)    # debug code
             # sleep(1000*10)                # debug code 调试时睡10秒够了
             sleep(1000*60*60*4)
