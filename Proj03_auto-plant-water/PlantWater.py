@@ -1,7 +1,10 @@
-import music
-from microbit import *
-
 '''
+————————————————————
+
+Target
+* 实时监测土壤湿度，并在土壤湿度偏低时自动开启水泵进行浇水。
+* 实时监测水箱水量，并仅在白天缺水时通过铃声提醒用户续水。
+
 ————————————————————
 
 Note
@@ -37,6 +40,9 @@ Red LED Module
 
 ————————————————————
 '''
+
+import music
+from microbit import *
 
 
 # 声明变量
@@ -76,7 +82,7 @@ def main():
 
 
 # 这个函数来读取土壤湿度 显示表情 返回是否需要浇水
-# return is_need_water bool value
+# @return is_need_water bool value
 def track_soil_humility():
     value = soil_humidity_sensor.read_analog()
     need_water = value < LOW_HUMIDITY
@@ -88,7 +94,7 @@ def track_soil_humility():
 
 
 # 控制硬件设备提醒用户水箱缺水
-# param switch_on: 开关蜂鸣器 bool value
+# @param switch_on: 开关蜂鸣器 bool value
 def switch_buzzer(switch_on):
     if switch_on:
         music.play('f4:2', pin = buzzer, wait = True, loop = False)
