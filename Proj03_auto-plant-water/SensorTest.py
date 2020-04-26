@@ -77,9 +77,8 @@ def debug_output_module():
     music.play('f4:2', pin = buzzer, wait = True, loop = False)
 
 
-# 获取传感器度数的文本内容
+# 获取传感器读数的文本内容
 def get_sensor_analog(sensor, title):
-    display.scroll(title)
     value = sensor.read_analog()
     content = title + ':' + str(value)
     return content
