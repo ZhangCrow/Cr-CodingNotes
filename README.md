@@ -1,7 +1,11 @@
-# INFO_796_Faker
-Coding on MicroBit With Python
+# Cr-MicroBitProjs
+INFO_697. Coding on MicroBit With Python  
 
-项目内部分资料来自学校和网络，如有侵权立刻删除。
+几个通过Python实现的MicroBit小工程。  
+
+最终作业是完成一台自动浇水机。  
+
+项目内部分资料来自学校和网络，如有侵权立刻删除。  
 
 [TOC]
 
