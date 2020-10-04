@@ -5,184 +5,203 @@
 //  Created by Crven on 20/09/27.
 //
 
+#pragma mark - 内容概述
+/** 求数组中最大升序（或降序）子序列长度
+ 原题链接：
+ https://leetcode.com/problems/longest-increasing-subsequence/?tab=Description#/description
+ 给定一个无序的整数数组，找到其中最长上升子序列的长度。
+ 举个栗子，
+ 示例数组 arr[] = {10, 9, 2, 5, 3, 7, 101, 18}，
+ 数组arr的最长的上升子序列是 {2, 3, 7, 101}，它的长度是4。
+ 请注意，可能会有多种最长上升子序列的组合，你只需要输出对应的长度即可。
+ 算法的时间复杂度应该为 O(n2) 。
+ 进阶：能将算法的时间复杂度降低到 O(nlogn) 吗?
+ */
+
+
 #pragma mark - 引用头文件
 #include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
 
 
 #pragma mark - 宏定义 & 全局变量
-#define swap(var1, var2)   (var1^=var2, var2^=var1, var1^=var2)
-
+#define DEBUG_MODE              (1)
+#define DEBUG_LOG(fmt, ...)     if (DEBUG_MODE) printf(fmt, ##__VA_ARGS__)
 // 测试用例
-int array[] = { 2, 0, 6, 1, 9, 5, 4, 7, 8, 3 };
+//int array[] = {10, 9, 2, 2, 3, 5, 4, 3, 5, 7, 6, 80, 7, 18, 8};
+//int array[] = {10, 9, 2, 5, 3, 7, 80, 18};
+int array[] = {4, 9, 4, 3, 7, 8};
 int count = sizeof(array)/sizeof(int);
 
 
 #pragma mark - 部分函数声明
-void printArray(int *arr, int count);
+void debugLogArrayFull(int *arr, int count);
+void debugLogArrayWithoutZero(int *a, int count);
 
 
-#pragma mark - 冒泡排序
+#pragma mark - O(n²)实现
 /** 笔记备注
- 最基础的排序之一
- 基本思路：
- 每个元素和它后面的元素们依次进行大小比较是否交换位置。
+ 思路：动态规划
+ 记录以每个index元素结尾的LIS
  */
-void bubbleSort(int *a, int count) {
-    for (int i = 0; i < count - 1; i++) {
-        for (int j = 0; j < count - 1 - i; j++) {
-            if (a[j] > a[j + 1]) {
-                swap(a[j], a[j+1]);
+int lengthOfLIS_on2(int* nums, int numsSize) {
+    // 0个元素可直接返回结果
+    if (numsSize < 1) {
+        return 0;
+    }
+    // 维护一个动态规划数组 保存以每个index为结尾的最大上升子序列长度
+    int dp[numsSize];
+    DEBUG_LOG("给定数组: ");
+    debugLogArrayFull(nums, numsSize);
+    // 此for循环只是为了log直观 初始化dp数组中元素
+    for (int i =0; i < numsSize; i++) {
+        dp[i] = 0;
+    }
+    int i, j = 0, result = 0;
+    for (i = 0; i < numsSize; i++) {
+        // dp[i]初始至少是1
+        dp[i] = 1;
+        DEBUG_LOG("—————— i = %d ——————\n", i);
+        DEBUG_LOG("外层-单步-开始 i:%2d  j:%2d  result:%2d  dp:", i, j, result);
+        debugLogArrayFull(dp, numsSize);
+        for (j = 0; j < i; j++) {
+            DEBUG_LOG("内层-单步-开始 i:%2d  j:%2d  result:%2d  dp:", i, j, result);
+            debugLogArrayFull(dp, numsSize);
+            if (nums[i] > nums[j] && dp[i] < dp[j] + 1) {
+                // 当前元素 大于 之前的某个元素 并且当前dp 小于 之前这个索引的dp+1 就更新当前dp
+                dp[i] = dp[j] + 1;
             }
+            DEBUG_LOG("内层-单步-结束 i:%2d  j:%2d  result:%2d  dp:", i, j, result);
+            debugLogArrayFull(dp, numsSize);
         }
-        printf("单元步骤 : i = %d  ", i);
-        printArray(a, count);
+        if (result < dp[i]) {
+            result = dp[i];
+        }
+        DEBUG_LOG("外层-单步-结束 i:%2d  j:%2d  result:%2d  dp:", i, j, result);
+        debugLogArrayFull(dp, numsSize);
     }
+    return result;
 }
 
+#pragma mark - O(nlogn)实现
 /** 笔记备注
- 基本思路：
- 对冒泡排序常见的改进方法是加入标志性变量flag，用于标志某一趟排序过程中是否有数据交换。
- 如果进行某一趟排序时并没有进行数据交换，则说明所有数据已经有序，可立即结束排序，避免不必要的
- 比较过程。
+ 思路：贪心 + 二分查找
+ 考虑一个简单的贪心，如果我们要使上升子序列尽可能的长，则我们需要让序列上升得尽可能慢，
+ 因此我们希望每次在上升子序列最后加上的那个数尽可能的小。
+ 基于上面的贪心思路，我们维护一个数组d[i] ，表示长度为i 的最长上升子序列的末尾元素的最小值，
+ 用len 记录目前最长上升子序列的长度，起始时len 为1，d[1]=nums[0]。
+ 设当前已求出的最长上升子序列的长度为len（初始时为1），从前往后遍历数组nums，在遍历到nums[i]
+ 时：
+ 如果nums[i]>d[len] ，则直接加入到d 数组末尾，并更新len=len+1；
+ 否则，在d 数组中二分查找，找到第一个比nums[i] 小的数d[k] ，并更新d[k+1]=nums[i]。
+ 
+ 以输入序列[0,8,4,12,2] 为例：
+ 第一步插入0，d=[0]；
+ 第二步插入8，d=[0,8]；
+ 第三步插入4，d=[0,4]；
+ 第四步插入12，d=[0,4,12]；
+ 第五步插入2，d=[0,2,12]。
+ 最终得到最大递增子序列长度为3。
  */
-void bubbleSortEx(int *a, int count) {
-    bool flag = true;
-    for (int i = 0; i < count - 1 && flag; i++) {
-        flag = false;
-        for (int j = 0; j < count - 1 - i; j++) {
-            if (a[j] > a[j + 1]) {
-                swap(a[j], a[j+1]);
-                flag = true;
-            }
+// 折半(二分)查找
+int binarySearch(int *array, int lenght, int key) {
+    int low = 0;
+    int high = lenght - 1;
+    int mid;
+    while (low <= high) {
+        mid = low + (high - low) / 2;
+        if (array[mid] > key) {
+            high = mid - 1;
+        } else if (array[mid] < key) {
+            low = mid + 1;
+        } else {
+            return mid;
         }
-        printf("单元步骤 : i = %d  ", i);
-        printArray(a, count);
     }
+    return low;
 }
 
-#pragma mark - 简单选择排序
-/** 笔记备注
- 基本思路：
- 每趟从待排序的记录中选出关键字最小的记录，顺序放在已排序的记录序列末尾，直到全部排序结束为止。
- */
-void selectionSort(int *a, int count) {
-    int i, j, k;
-    for (i = 0; i < count - 1; i++) {
-        k = i;
-        for (j = i + 1; j < count; j++) {
-            if (a[k] > a[j]) {
-                k = j;
-            }
-        }
-        if (i != k) {
-            swap(a[i], a[k]);
-        }
-        printf("单元步骤 : i = %d  ", i);
-        printArray(a, count);
+int lengthOfLIS_onlogn(int* nums, int numsSize) {
+    // 长度若为0，无须比较直接返回
+    if (numsSize < 1) {
+        return 0;
     }
+    // tmp[]为 记录长度为i的最长上升子序列的末尾元素的最小值
+    int tmp[numsSize], position = 0;
+    DEBUG_LOG("给定数组: ");
+    debugLogArrayFull(nums, numsSize);
+    // 此for循环只是为了log直观 初始化tmp数组中元素
+    for (int i =0; i < numsSize; i++) {
+        tmp[i] = 0;
+    }
+    tmp[0] = nums[0];
+    int lenght = 1;
+    // 从遍历nums[1]开始遍历nums数组
+    for (int i = 1; i < numsSize; i++) {
+        DEBUG_LOG("单步循环开始 i=%2d pos=%2d len=%2d tmp:", i, position, lenght);
+        debugLogArrayWithoutZero(tmp, numsSize);
+        // 若当前nums元素 > tmp最大元素，插入tmp，length++
+        if (nums[i] > tmp[lenght - 1]) {
+            tmp[lenght] = nums[i];
+            lenght++;
+            DEBUG_LOG("单步循环结束 i=%2d ------ len=%2d tmp:", i, lenght);
+            debugLogArrayWithoutZero(tmp, numsSize);
+        } else {
+            // 二分定位 用当前nums元素 替换 tmp中合理位置元素
+            position = binarySearch(tmp, lenght, nums[i]);
+            tmp[position] = nums[i];
+            DEBUG_LOG("单步循环结束 i=%2d pos=%2d ------ tmp:", i, position);
+            debugLogArrayWithoutZero(tmp, numsSize);
+        }
+    }
+    return lenght;
 }
 
-#pragma mark - 快速排序
-/** 笔记备注
- 快速排序是对冒泡排序的一种改进方式，通过分治和递归的思想实现。
- 基本思路：
- 通过一趟排序将要排序的数据分割成独立的两部分，使分割点左边都是比它小的数，右边都是比它大的数。
- */
-void quickSort(int *a, int left, int right) {
-    if (left >= right) {
-        return;
-    }
-    int i = left;
-    int j = right;
-    int key = a[i];
-    while (i < j) {
-        while (i < j && key <= a[j]) {
-            j--;
-        }
-        a[i] = a[j];
-        printf("左边部分 : i = %d, j = %d  ", i, j);
-        printArray(a, count);
-        while (i < j && key >= a[i]) {
-            i++;
-        }
-        a[j] = a[i];
-        printf("右边部分 : i = %d, j = %d  ", i, j);
-        printArray(a, count);
-    }
-    a[i] = key;
-    printf("单元步骤 : i = %d, j = %d  ", i, j);
-    printArray(a, count);
-    quickSort(a, left, i - 1);
-    quickSort(a, i + 1, right);
-}
 
-#pragma mark - 主函数 & 公共函数
+#pragma mark - 主函数&公共函数
 int main(int argc, const char * argv[]) {
+    printf("求数组中最大升序子序列长度\n");
     
-    printf("冒泡排序\n");
-    int arrA[count];
-    memcpy(arrA, array, sizeof(array));
-    printf("原始数组 :        ");
-    printArray(arrA, count);
-    bubbleSort(arrA, count);
-    printf("最终结果 :        ");
-    printArray(arrA, count);
     printf("\n");
+    printf("O(n²)方式\n");
+    int count_on2 = lengthOfLIS_on2(array, sizeof(array)/sizeof(int));
+    printf("result = %d\n", count_on2);
     
-    printf("冒泡排序优化\n");
-    int arrB[count];
-    memcpy(arrB, array, sizeof(array));
-    printf("原始数组 :        ");
-    printArray(arrB, count);
-    bubbleSort(arrB, count);
-    printf("最终结果 :        ");
-    printArray(arrB, count);
-    printf("\n");
     
-    printf("简单选择排序\n");
-    int arrC[count];
-    memcpy(arrC, array, sizeof(array));
-    printf("原始数组 :        ");
-    printArray(arrC, count);
-    selectionSort(arrC, count);
-    printf("最终结果 :        ");
-    printArray(arrC, count);
     printf("\n");
-    
-    printf("快速排序\n");
-    int arrD[count];
-    memcpy(arrD, array, sizeof(array));
-    printf("原始数组 :               ");
-    printArray(arrD, count);
-    quickSort(arrD, 0, count - 1);
-    printf("最终结果 :               ");
-    printArray(arrD, count);
-    printf("\n");
+    printf("O(nlogn)方式\n");
+    int count_onlogn = lengthOfLIS_onlogn(array, sizeof(array)/sizeof(int));
+    printf("result = %d\n", count_onlogn);
     
     return 0;
 }
 
-void printArray(int *arr, int count) {
-    printf("{");
+void debugLogArrayFull(int *a, int count) {
+    DEBUG_LOG("{");
     for (int i = 0; i < count; i++) {
-        printf("%2d", arr[i]);
+        DEBUG_LOG("%2d", a[i]);
         if (i < count - 1) {
-            printf(",");
+            DEBUG_LOG(" ,");
         }
     }
-    printf(" }\n");
+    DEBUG_LOG(" }\n");
+}
+
+void debugLogArrayWithoutZero(int *a, int count) {
+    DEBUG_LOG("{");
+    for (int i = 0; i < count; i++) {
+        if (a[i] != 0) {
+            DEBUG_LOG("%2d",a[i]);
+            if (i < count - 1 && a[i+1] != 0) {
+                DEBUG_LOG(" ,");
+            }
+        }
+    }
+    DEBUG_LOG(" }\n");
 }
 
 #pragma mark - 整体笔记备注
 /**
- 常见排序导图：
- http://upload-images.jianshu.io/upload_images/1063354-9960fd72f12384e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240
- 
- 常见排序的复杂度：
- http://upload-images.jianshu.io/upload_images/1063354-a9187d5b43d4591a.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240
- 
- 排序的稳定性是指如果在排序的序列中，存在前后相同的两个元素的话，排序前和排序后它们的相对位置
- 不发生变化。
+ 整体思路
+ 1、子序列：不要求连续子序列，只要保证元素前后顺序一致即可；
+ 2、上升：这里的“上升”是“严格上升”，类似于 [2, 3, 3, 6, 7] 这样的子序列是不符合要求的。
  */

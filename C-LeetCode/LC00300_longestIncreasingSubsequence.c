@@ -1,9 +1,8 @@
 //
-//  main.c
-//  c-playground
-//  LeetCode - 临时代码板
+//  LC00300_longestIncreasingSubsequence.c
+//  
 //
-//  Created by Crven on 20/09/27.
+//  Created by Crven on 17/03/13.
 //
 
 #pragma mark - 内容概述
@@ -206,3 +205,4 @@ void debugLogArrayWithoutZero(int *a, int count) {
  1、子序列：不要求连续子序列，只要保证元素前后顺序一致即可；
  2、上升：这里的“上升”是“严格上升”，类似于 [2, 3, 3, 6, 7] 这样的子序列是不符合要求的。
  */
+
