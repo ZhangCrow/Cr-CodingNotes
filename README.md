@@ -6,10 +6,12 @@
 ### 内容索引
 
 | 目录                            | 备注        |
-|:------------------------------|:-----------|
-| Python-GrokkingAlgorithmsNotes | 算法图解笔记      |
+|:-------------------------------|:-----------|
+| Docs                           | 通用文档       |
+| Python-GrokkingAlgorithmsNotes | 算法图解笔记    |
 | Python-MicroBitProjs           | MicroBit小项目 |
-| 即将上新...           | 施工中🚧 |
+| C-LeetCode                     | LeetCode笔记 C |
+| 即将上新...                     | 施工中🚧 |
 
 
 
