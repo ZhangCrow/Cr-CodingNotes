@@ -1,9 +1,18 @@
 //
-//  LC00_playground.c
-//  LeetCode - 临时代码板
+//  LCExt001_commonSorting.c
 //
-//  Created by Crven on 20/09/27.
+//  Created by Crven on 17/06/19.
 //
+
+#pragma mark - 内容概述
+/** 一些常见排序的实现
+ * 冒泡排序
+ * 冒泡排序的优化
+ * 简单选择排序
+ * 快速排序
+ * 待更新…… （直接插入排序、希尔排序、堆排序、归并排序、基数排序等）
+ */
+
 
 #pragma mark - 引用头文件
 #include <stdio.h>
