@@ -1,4 +1,3 @@
-
 ### Code ###
 # Visual Studio Code - https://code.visualstudio.com/
 .settings/
@@ -8,6 +7,7 @@
 .DS_Store
 Icon?
 .svn/
+LC00_playground_out
 
 ### Objective-C ###
 # Xcode
