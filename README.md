@@ -10,7 +10,8 @@
 | Docs                           | 通用文档       |
 | Python-GrokkingAlgorithmsNotes | 算法图解笔记    |
 | Python-MicroBitProjs           | MicroBit小项目 |
-| C-LeetCode                     | LeetCode笔记 C |
+| Python-DailyCode               | LeetCode等平台笔记 Python |
+| C-DailyCode                    | LeetCode等平台笔记 C |
 | 即将上新...                     | 施工中🚧 |
 
 
