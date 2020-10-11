@@ -1,48 +1,76 @@
-# -*- coding: UTF-8 -*-
+"""
+———————————————————————
+Python3
+CR00_playground.py
+DailyCode 临时调试板
+———————————————————————
+"""
 
-'''
-——————————————————————————
- LC00_playground
- LeetCode笔记 - 临时代码板
-——————————————————————————
-'''
-
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
 
 class Solution:
-    def sortColors(self, nums):
-    # def sortColors(self, nums: List[int]) -> None:
-        n = len(nums)
-        p0, p2 = 0, n - 1
-        i = 0
-        while i <= p2:
-            while i <= p2 and nums[i] == 2:
-                nums[i], nums[p2] = nums[p2], nums[i]
-                p2 -= 1
-            if nums[i] == 0:
-                nums[i], nums[p0] = nums[p0], nums[i]
-                p0 += 1
-            i += 1
+    def reverseList(self, head: ListNode) -> ListNode:
+        if not (head and head.next):
+            return head
+        cur = head
+        prev = None
+        while cur:
+            tmp = cur.next
+            cur.next = prev
+            prev = cur
+            cur = tmp
+        return prev
 
-    def upper_bound_(self , length , target , arr ):
-        index = length
-        left = 0
-        right = length - 1
-        if arr[length - 1] < target:
-            return length + 1
-        while(left < right):
-            mid = left + (right - left) / 2
-            if (arr[mid] >= target):
-                if (mid < target):
-                    index = mid
-                    right = mid - 1
-            else:
-                left = mid + 1
-        return index + 1
+def stringToIntegerList(input):
+    return json.loads(input)
 
-arr = [2,0,2,1,1,0]
-arr = [1,2,4,4,5]
-obj = Solution()
-# obj.sortColors(arr)
-result = obj.upper_bound_(5, 4, arr)
-print(result)
+def stringToListNode(input):
+    # Generate list from the input
+    numbers = stringToIntegerList(input)
 
+    # Now convert that list into linked list
+    dummyRoot = ListNode(0)
+    ptr = dummyRoot
+    for number in numbers:
+        ptr.next = ListNode(number)
+        ptr = ptr.next
+
+    ptr = dummyRoot.next
+    return ptr
+
+def listNodeToString(node):
+    if not node:
+        return "[]"
+
+    result = ""
+    while node:
+        result += str(node.val) + ", "
+        node = node.next
+    return "[" + result[:-2] + "]"
+
+def main():
+    import sys
+    import io
+    def readlines():
+        for line in io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8'):
+            yield line.strip('\n')
+
+    lines = readlines()
+    while True:
+        try:
+            line = next(lines)
+            head = stringToListNode(line);
+            
+            ret = Solution().reverseList(head)
+
+            out = listNodeToString(ret);
+            print(out)
+        except StopIteration:
+            break
+
+if __name__ == '__main__':
+    main()
