@@ -6,38 +6,22 @@
 - - -  
 **目录索引**  
 
-| 文件编号  | 描述    | 难度 | 标签    | 备注 |
-|-------|-------|----|-------|----|
-| CR00  | 代码调试板 | －－ |       |    |
-| LC20  | 有效的括号 | 简单 | 栈 字符串 |    |
-| LC206 | 反转链表  | 简单 | 链表    |    |
-| NC105 | 二分查找  | 简单 | 二分    |    |
+| 文件编号  | 描述        | 难度 | 标签     | 备注 |
+|-------|-----------|----|--------|----|
+| CR00  | 代码调试板     | －－ |        |    |
+| NC105 | 二分查找      | 简单 | 二分     |    |
+| LC20  | 有效的括号     | 简单 | 栈 字符串  |    |
+| LC206 | 反转链表      | 简单 | 链表     |    |
+| LC141 | 环形链表      | 简单 | 链表 双指针 |    |
+| LC92  | 反转链表指定区间  | 中等 | 链表     |    |
+| LC53  | 连续子数组的最大和 | 简单 | 动态规划   |    |
+| LC70  | 上台阶       | 简单 | 动态规划   |    |
+| NC45  | 二叉树先中后序遍历 | 中等 | 栈 树 哈希 |    |
 
 - - -  
 **ToDo**  
 LC#75 https://leetcode-cn.com/problems/sort-colors/  
 LC#1031 https://leetcode-cn.com/problems/maximum-sum-of-two-non-overlapping-subarrays/
- 
-NC#4 判断链表中是否有环 
-简单 链表 双指针
-https://www.nowcoder.com/practice/650474f313294468a4ded3ce0f7898b9
-
-NC#45 实现二叉树的先序中序后序遍历
-中等 栈 树 哈希
-https://www.nowcoder.com/practice/a9fec6c46a684ad5a3abd4e365a9d362
-
-NC#21 链表内指定区间反转
-中等 链表
-https://www.nowcoder.com/practice/b58434e200a648c589ca2063f1faf58c
- 
-NC#19 子数组的最大累加和问题
-简单 分治 动态规划
-https://www.nowcoder.com/practice/554aa508dd5d4fefbf0f86e5fe953abd
-
-NC#68 跳台阶
-简单 递归 动态规划
-https://www.nowcoder.com/practice/8c82a5b80378478f9484d87d1c5f12a4
-
 
 - - -  
 **Run Python Program**  
